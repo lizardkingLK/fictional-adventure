@@ -1,13 +1,9 @@
-import React from "react";
-import Brand from "../components/brand";
+import React, { ReactNode } from "react";
 import Link from "next/link";
-
-type DashboardItem = { name: string; path: string };
-
-const dashboardItems: DashboardItem[] = [
-  { name: "Vehicles", path: "/dashboard/vehicles" },
-  { name: "Customers", path: "/dashobard/customers" },
-];
+import { DashboardItem } from "@/types/app.types";
+import { DashboardItems } from "./config";
+import { Button } from "@/components/ui/button";
+import { MenuIcon, SettingsIcon } from "lucide-react";
 
 const DashboardMenuItem = ({ path, name }: DashboardItem) => {
   return (
@@ -19,8 +15,18 @@ const DashboardMenuItem = ({ path, name }: DashboardItem) => {
   );
 };
 
-const DashboardMenu = () => {
-  return dashboardItems.map(
+const DashboardSliderHead = () => {
+  return (
+    <Link href={"/"}>
+      <div className="flex min-h-10 items-center justify-center bg-green-400 p-2">
+        <h1 className="font-black text-white">GarageSales</h1>
+      </div>
+    </Link>
+  );
+};
+
+const DashboardSliderBody = () => {
+  return DashboardItems.map(
     (
       item: React.JSX.IntrinsicAttributes & { name: any; path: any },
       index: React.Key | null | undefined,
@@ -28,18 +34,34 @@ const DashboardMenu = () => {
   );
 };
 
+const DashboardContentHead = () => {
+  return (
+    <header className="flex items-center justify-between p-2">
+      <Button variant="outline" size="icon" className="font-black text-black">
+        <MenuIcon className="h-4 w-4" />
+      </Button>
+      <Button variant="outline" size="icon" className="font-black text-black">
+        <SettingsIcon className="h-4 w-4" />
+      </Button>
+    </header>
+  );
+};
+
 const Dashboard = ({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) => {
   return (
     <section className="flex">
       <div className="min-h-screen w-1/5 bg-green-300">
-        <Brand />
-        <DashboardMenu />
+        <DashboardSliderHead />
+        <DashboardSliderBody />
       </div>
-      <div className="min-h-screen w-64">{children}</div>
+      <div className="min-h-screen w-4/5">
+        <DashboardContentHead />
+        {children}
+      </div>
     </section>
   );
 };
