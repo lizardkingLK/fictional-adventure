@@ -3,7 +3,8 @@ import React from "react";
 import { columns } from "./columns";
 import { Database } from "@/types/db.types";
 import { Button } from "@/components/ui/button";
-import { PencilIcon, PlusIcon, RecycleIcon } from "lucide-react";
+import { PencilIcon, PlusIcon, XIcon } from "lucide-react";
+import Link from "next/link";
 
 async function getData(): Promise<
   Database["public"]["Tables"]["Vehicle"]["Row"][]
@@ -31,19 +32,19 @@ const Vehicles = async () => {
     <section>
       <header className="flex items-center justify-between p-2">
         <h1 className="font-black">Vehicles</h1>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-          >
+        <div className="flex items-center gap-8 pr-2">
+          <Link href={"/dashboard/vehicles/create"} title="Add New Vehicle">
             <PlusIcon className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon">
+          </Link>
+          <Link
+            href={"/dashboard/vehicles/edit/1"}
+            title="Update Vehicle Details"
+          >
             <PencilIcon className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon">
-            <RecycleIcon className="h-4 w-4" />
-          </Button>
+          </Link>
+          <Link href={"/dashboard/vehicles/delete/1"} title="Delete Vehicle">
+            <XIcon className="h-4 w-4" />
+          </Link>
         </div>
       </header>
       <div className="p-2">
