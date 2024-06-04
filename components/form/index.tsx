@@ -35,6 +35,7 @@ import {
   CommandInput,
   CommandItem,
 } from "../ui/command";
+import { Database } from "@/types/db.types";
 
 const vehicleTypes: readonly [string, ...string[]] = [
   "HATCHBACK",
@@ -43,18 +44,6 @@ const vehicleTypes: readonly [string, ...string[]] = [
   "VAN",
   "JEEP",
 ];
-
-const customers = [
-  { label: "English", value: 1 },
-  { label: "French", value: 2 },
-  { label: "German", value: 3 },
-  { label: "Spanish", value: 4 },
-  { label: "Portuguese", value: 5 },
-  { label: "Russian", value: 6 },
-  { label: "Japanese", value: 7 },
-  { label: "Korean", value: 8 },
-  { label: "Chinese", value: 9 },
-] as const;
 
 const formSchema = z.object({
   registration: z.string().min(2, {
@@ -75,7 +64,16 @@ const formSchema = z.object({
   customer: z.number({ required_error: "Select a valid customer." }),
 });
 
-export function VehicleForm() {
+export function VehicleForm({
+  customers,
+}: {
+  customers: Database["public"]["Tables"]["Customer"]["Row"][];
+}) {
+  const customersOptionset = customers.map((customer) => ({
+    value: customer.id,
+    label: customer.id.toString(),
+  }));
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -199,8 +197,9 @@ export function VehicleForm() {
                       )}
                     >
                       {field.value
-                        ? customers.find(
-                            (customer) => customer.value === field.value,
+                        ? customersOptionset.find(
+                            (customer: { value: number }) =>
+                              customer.value === field.value,
                           )?.label
                         : "Select customer"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -213,7 +212,7 @@ export function VehicleForm() {
                     <CommandEmpty>No customer found.</CommandEmpty>
                     <CommandGroup>
                       <CommandList className="w-full">
-                        {customers.map((customer) => (
+                        {customersOptionset.map((customer) => (
                           <CommandItem
                             key={customer.value}
                             value={customer.label}

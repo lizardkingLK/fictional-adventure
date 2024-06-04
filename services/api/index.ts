@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/db";
+import { Database } from "@/types/db.types";
 
 export const getCustomers = async () => {
   const { data: customers, error } = await supabase
@@ -9,5 +10,5 @@ export const getCustomers = async () => {
     return null;
   }
 
-  return customers;
+  return customers as Database["public"]["Tables"]["Customer"]["Row"][];
 };
