@@ -1,21 +1,18 @@
 import { DataTable } from "@/components/table";
 import React from "react";
-import { Database } from "@/types/db.types";
 import { PencilIcon, PlusIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { TooltipComponent } from "@/components/tooltip";
 import { columns } from "./columns";
-import { getCustomers } from "@/services/api";
+import { getCustomersWithUserData } from "@/services/api";
 
-async function getData(): Promise<
-  Database["public"]["Tables"]["Customer"]["Row"][]
-> {
-    const customers = await getCustomers();
-    if (!customers) {
-        return [];
-    }
-    
-    return customers;
+async function getData() {
+  const customersWithUserData = await getCustomersWithUserData();
+  if (!customersWithUserData) {
+    return [];
+  }
+
+  return customersWithUserData;
 }
 
 const Customers = async () => {

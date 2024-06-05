@@ -1,12 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Database } from "@/types/db.types";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CustomerUserType } from "@/types/app.types";
 
-export const columns: ColumnDef<
-  Database["public"]["Tables"]["Customer"]["Row"]
->[] = [
+export const columns: ColumnDef<CustomerUserType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -36,7 +34,11 @@ export const columns: ColumnDef<
     header: "Id",
   },
   {
-    accessorKey: "userId",
-    header: "User",
+    accessorKey: "User.firstname",
+    header: "First Name",
+  },
+  {
+    accessorKey: "User.lastname",
+    header: "Last Name",
   },
 ];
